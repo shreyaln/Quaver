@@ -1,6 +1,10 @@
 from tkinter import *
-
+import os
 #tkinter works with labels
+
+
+#The Entry widget allows you to enter a sing-line text.
+#In Tkinter, to create a textbox, you use the Entry widget:
 
 def registeruser():
     usernameinfo = username.get()
@@ -8,7 +12,7 @@ def registeruser():
 
     #entering it into text file called ?
     file = open(usernameinfo,'w')
-    file.write(usernameinfo+',')
+    file.write(usernameinfo+'\n')
     file.write(passwordinfo+'\n')
     file.close()
 
@@ -50,10 +54,68 @@ def register():
     Button(screen1, text = "REGISTER",width = 10, height = 1,command = registeruser).pack()
 
     # we are creating 2 entries and assigning them to store value in the text variable
+def delete2():
+    screen3.destroy()
+
+def delete3():
+    screen4.destroy()
+def delete4():
+    screen5.destroy()
+def session():
+    #everytime a user logs in, he is given a session
+    None
+def loginsuccess():
+
+    #make this go to our main quaver page
+    global screen3
+    screen3 = Toplevel(screen)
+    screen3.title("SUCCESS")
+    screen3.geometry("150x100")
+    Label(screen3,text = " LOGIN SUCCESSFUL").pack()
+    Button(screen3,text = "OK", command = delete2).pack()
+    session()
+def passwordwrong():
+    global screen4
+    screen4 = Toplevel(screen)
+    screen4.title("PASSWORD ERROR")
+    screen4.geometry("250x100")
+    Label(screen4, text=" PASSWORD NOT RECOGNISED!").pack()
+    Button(screen4, text="OK", command=delete3).pack()
+
+
+def usernotfound():
+    global screen5
+    screen5 = Toplevel(screen)
+    screen5.title("USERNAME ERROR")
+    screen5.geometry("150x100")
+    Label(screen5, text=" USER NOT FOUND!").pack()
+    Button(screen5, text="OK", command=delete4).pack()
+
+
 
 def loginuser():
     #called when login button clicked
-    None
+    username1 = usernameverify.get()
+    password1 = passwordverify.get()
+
+    usernameentry1.delete(0,END)
+    passwordentry1.delete(0,END)
+
+    #to get files in working directory list
+    listoffiles = os.listdir()
+    #this returns a list of all files in our current directory
+
+    if username1 in listoffiles:
+        file1 = open(username1,'r')
+        if password1 in file1.read().splitlines() and password1 !=username1:
+            loginsuccess()
+            print("LOGIN SUCCESS")
+        else:
+            passwordwrong()
+            print("Password is wrong!")
+    else:
+        usernotfound()
+        print("User not found!")
     
 def login():
     #pretty much just like the register function
